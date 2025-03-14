@@ -1,21 +1,26 @@
-# LatentSync: Audio Conditioned Latent Diffusion Models for Lip Sync
+# LatentSync
 
-<div align="center">
+<!-- <div align="center"> -->
 
-[![arXiv](https://img.shields.io/badge/arXiv_paper-2412.09262-b31b1b)](https://arxiv.org/abs/2412.09262)
-[![arXiv](https://img.shields.io/badge/%F0%9F%A4%97%20space-HuggingFace-yellow)](https://huggingface.co/spaces/fffiloni/LatentSync)
+[![arXiv](https://img.shields.io/badge/arXiv-Paper-b31b1b)](https://arxiv.org/abs/2412.09262)
+[![arXiv](https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Model-yellow)](https://huggingface.co/ByteDance/LatentSync-1.5)
+[![arXiv](https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Space-yellow)](https://huggingface.co/spaces/fffiloni/LatentSync)
 <a href="https://replicate.com/lucataco/latentsync"><img src="https://replicate.com/lucataco/latentsync/badge" alt="Replicate"></a>
 
-</div>
+<!-- </div> -->
 
-## 📖 Abstract
+## 🔥 Updates
 
-We present *LatentSync*, an end-to-end lip sync framework based on audio conditioned latent diffusion models without any intermediate motion representation, diverging from previous diffusion-based lip sync methods based on pixel space diffusion or two-stage generation. Our framework can leverage the powerful capabilities of Stable Diffusion to directly model complex audio-visual correlations. Additionally, we found that the diffusion-based lip sync methods exhibit inferior temporal consistency due to the inconsistency in the diffusion process across different frames. We propose *Temporal REPresentation Alignment (TREPA)* to enhance temporal consistency while preserving lip-sync accuracy. TREPA uses temporal representations extracted by large-scale self-supervised video models to align the generated frames with the ground truth frames.
+- `2025/03/14`: We released LatentSync 1.5, which (1) improves temporal consistency via adding temporal layer, (2) improves performance on Chinese videos and (3) reduces the VRAM requirement of the stage2 training to **23 GB** through a series of optimizations. Learn more details at [this](docs/changelog_v1_5.md).
+
+## 📖 Introduction
+
+We present *LatentSync*, an end-to-end lip-sync method based on audio-conditioned latent diffusion models without any intermediate motion representation, diverging from previous diffusion-based lip-sync methods based on pixel-space diffusion or two-stage generation. Our framework can leverage the powerful capabilities of Stable Diffusion to directly model complex audio-visual correlations.
 
 ## 🏗️ Framework
 
 <p align="center">
-<img src="assets/framework.png" width=100%>
+<img src="docs/framework.png" width=100%>
 <p>
 
 LatentSync uses the [Whisper](https://github.com/openai/whisper) to convert melspectrogram into audio embeddings, which are then integrated into the U-Net via cross-attention layers. The reference and masked frames are channel-wise concatenated with noised latents as the input of U-Net. In the training process, we use a one-step method to get estimated clean latents from predicted noises, which are then decoded to obtain the estimated clean frames. The TREPA, [LPIPS](https://arxiv.org/abs/1801.03924) and [SyncNet](https://www.robots.ox.ac.uk/~vgg/publications/2016/Chung16a/chung16a.pdf) losses are added in the pixel space.
