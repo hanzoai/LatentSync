@@ -116,4 +116,7 @@ def load_model(
     model = Whisper(dims)
     model.load_state_dict(checkpoint["model_state_dict"])
 
+    del checkpoint
+    torch.cuda.empty_cache()
+
     return model.to(device)

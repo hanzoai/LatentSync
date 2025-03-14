@@ -11,7 +11,7 @@
 
 ## 🔥 Updates
 
-- `2025/03/14`: We released LatentSync 1.5, which (1) improves temporal consistency via adding temporal layer, (2) improves performance on Chinese videos and (3) reduces the VRAM requirement of the stage2 training to **23 GB** through a series of optimizations. Learn more details at [this](docs/changelog_v1_5.md).
+- `2025/03/14`: We released LatentSync 1.5, which (1) improves temporal consistency via adding temporal layer, (2) improves performance on Chinese videos and (3) reduces the VRAM requirement of the stage2 training to **20 GB** through a series of optimizations. Learn more details [here](docs/changelog_v1.5.md).
 
 ## 📖 Introduction
 
@@ -95,7 +95,7 @@ If the download is successful, the checkpoints should appear as follows:
 ```
 ./checkpoints/
 |-- latentsync_unet.pt
-|-- latentsync_syncnet.pt
+|-- stable_syncnet.pt
 |-- whisper
 |   `-- tiny.pt
 |-- auxiliary
@@ -109,11 +109,11 @@ If the download is successful, the checkpoints should appear as follows:
 |   `-- vit_g_hybrid_pt_1200e_ssv2_ft.pth
 ```
 
-These already include all the checkpoints required for latentsync training and inference. If you just want to try inference, you only need to download `latentsync_unet.pt` and `tiny.pt` from our [HuggingFace repo](https://huggingface.co/ByteDance/LatentSync)
+These already include all the checkpoints required for latentsync training and inference. If you just want to try inference, you only need to download `latentsync_unet.pt` and `tiny.pt` from our [HuggingFace repo](https://huggingface.co/ByteDance/LatentSync-1.5)
 
 ## 🚀 Inference
 
-There are two ways to perform inference, and both require 6.5 GB of VRAM.
+There are two ways to perform inference, and both require 6.8 GB of VRAM.
 
 ### 1. Gradio App
 

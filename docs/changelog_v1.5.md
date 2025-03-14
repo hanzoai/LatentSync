@@ -6,18 +6,19 @@
 
 2. Improves performance on Chinese videos: many issues reported poor performance on Chinese videos, so we added Chinese data to the training of the new model version.
 
-3. Reduce the VRAM requirement of the stage2 training to **23 GB** through the following optimizations:
+3. Reduce the VRAM requirement of the stage2 training to **20 GB** through the following optimizations:
 
    1. Implement gradient checkpointing in U-Net, VAE, SyncNet and VideoMAE
    2. Replace xFormers with PyTorch's native implementation of FlashAttention-2.
-   3. The stage2 training only requires training the temporal layer and audio cross-attention layer, which significantly reduces VRAM requirement compared to the previous full-parameter fine-tuning.
+   3. Clear the CUDA cache after loading checkpoints.
+   4. The stage2 training only requires training the temporal layer and audio cross-attention layer, which significantly reduces VRAM requirement compared to the previous full-parameter fine-tuning.
 
-   Now you can finetune LatentSync on a single **RTX 3090**! Run` configs/unet/stage2_efficient.yaml` to start the stage2 training.
+   Now you can finetune LatentSync on a single **RTX 3090**! Start the stage2 training with `configs/unet/stage2_efficient.yaml`.
 
 4. Other code optimizations:
 
-   1. Removed the dependency on xFormers and Triton.
-   2. Upgraded the diffusers version to `0.32.2`.
+   1. Remove the dependency on xFormers and Triton.
+   2. Upgrade the diffusers version to `0.32.2`.
 
 ## Demo
 

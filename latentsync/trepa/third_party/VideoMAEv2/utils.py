@@ -76,4 +76,7 @@ def load_videomae_model(device, ckpt_path=None, with_cp=False):
             ckpt = ckpt[model_key]
             break
     model.load_state_dict(ckpt)
+
+    del ckpt
+    torch.cuda.empty_cache()
     return model.to(device)

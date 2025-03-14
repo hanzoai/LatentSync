@@ -472,25 +472,24 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin):
 
     def load_state_dict(self, state_dict, strict=True):
         # If the loaded checkpoint's in_channels or out_channels are different from config
-        temp_state_dict = copy.deepcopy(state_dict)
-        if temp_state_dict["conv_in.weight"].shape[1] != self.config.in_channels:
-            del temp_state_dict["conv_in.weight"]
-            del temp_state_dict["conv_in.bias"]
-        if temp_state_dict["conv_out.weight"].shape[0] != self.config.out_channels:
-            del temp_state_dict["conv_out.weight"]
-            del temp_state_dict["conv_out.bias"]
+        if state_dict["conv_in.weight"].shape[1] != self.config.in_channels:
+            del state_dict["conv_in.weight"]
+            del state_dict["conv_in.bias"]
+        if state_dict["conv_out.weight"].shape[0] != self.config.out_channels:
+            del state_dict["conv_out.weight"]
+            del state_dict["conv_out.bias"]
 
         # If the loaded checkpoint's cross_attention_dim is different from config
         keys_to_remove = []
-        for key in temp_state_dict:
+        for key in state_dict:
             if "attn2.to_k." in key or "attn2.to_v." in key:
-                if temp_state_dict[key].shape[1] != self.config.cross_attention_dim:
+                if state_dict[key].shape[1] != self.config.cross_attention_dim:
                     keys_to_remove.append(key)
 
         for key in keys_to_remove:
-            del temp_state_dict[key]
+            del state_dict[key]
 
-        return super().load_state_dict(state_dict=temp_state_dict, strict=strict)
+        return super().load_state_dict(state_dict=state_dict, strict=strict)
 
     @classmethod
     def from_pretrained(cls, model_config: dict, ckpt_path: str, device="cpu"):
@@ -503,8 +502,10 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin):
                 resume_global_step = ckpt["global_step"]
             else:
                 resume_global_step = 0
-            state_dict = ckpt["state_dict"] if "state_dict" in ckpt else ckpt
-            unet.load_state_dict(state_dict, strict=False)
+            unet.load_state_dict(ckpt["state_dict"], strict=False)
+
+            del ckpt
+            torch.cuda.empty_cache()
         else:
             resume_global_step = 0
 

@@ -136,9 +136,14 @@ def main(config):
         syncnet = StableSyncNet(OmegaConf.to_container(syncnet_config.model), gradient_checkpointing=True).to(
             device=device, dtype=torch.float16
         )
-        syncnet_checkpoint = torch.load(syncnet_config.ckpt.inference_ckpt_path, map_location=device, weights_only=True)
+        syncnet_checkpoint = torch.load(
+            syncnet_config.ckpt.inference_ckpt_path, map_location=device, weights_only=True
+        )
         syncnet.load_state_dict(syncnet_checkpoint["state_dict"])
         syncnet.requires_grad_(False)
+
+        del syncnet_checkpoint
+        torch.cuda.empty_cache()
 
     if config.model.use_motion_module:
         denoising_unet.requires_grad_(False)
