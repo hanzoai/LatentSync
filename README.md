@@ -1,17 +1,17 @@
-# LatentSync
+<h1 align="center">LatentSync</h1>
 
-<!-- <div align="center"> -->
+<div align="center">
 
 [![arXiv](https://img.shields.io/badge/arXiv-Paper-b31b1b)](https://arxiv.org/abs/2412.09262)
 [![arXiv](https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Model-yellow)](https://huggingface.co/ByteDance/LatentSync-1.5)
 [![arXiv](https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Space-yellow)](https://huggingface.co/spaces/fffiloni/LatentSync)
 <a href="https://replicate.com/lucataco/latentsync"><img src="https://replicate.com/lucataco/latentsync/badge" alt="Replicate"></a>
 
-<!-- </div> -->
+</div>
 
 ## 🔥 Updates
 
-- `2025/03/14`: We released LatentSync 1.5, which (1) improves temporal consistency via adding temporal layer, (2) improves performance on Chinese videos and (3) reduces the VRAM requirement of the stage2 training to **20 GB** through a series of optimizations. Learn more details [here](docs/changelog_v1.5.md).
+- `2025/03/14`: We released **LatentSync 1.5**, which **(1)** improves temporal consistency via adding temporal layer, **(2)** improves performance on Chinese videos and **(3)** reduces the VRAM requirement of the stage2 training to **20 GB** through a series of optimizations. Learn more details [here](docs/changelog_v1.5.md).
 
 ## 📖 Introduction
 
@@ -196,3 +196,9 @@ You can evaluate the accuracy of SyncNet on a dataset by running the following s
 - Some code are borrowed from [MuseTalk](https://github.com/TMElyralab/MuseTalk), [StyleSync](https://github.com/guanjz20/StyleSync), [SyncNet](https://github.com/joonson/syncnet_python), [Wav2Lip](https://github.com/Rudrabha/Wav2Lip).
 
 Thanks for their generous contributions to the open-source community.
+
+<!-- ## Citation
+If you find our repo useful for your research, please consider citing our paper:
+```
+
+``` -->

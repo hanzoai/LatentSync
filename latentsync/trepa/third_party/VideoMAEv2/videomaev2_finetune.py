@@ -16,7 +16,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.checkpoint as cp
 from itertools import repeat
-from torch.nn.attention import sdpa_kernel, SDPBackend
 
 
 def _no_grad_trunc_normal_(tensor, mean, std, a, b):
@@ -243,8 +242,7 @@ class Attention(nn.Module):
         q, k, v = qkv[0], qkv[1], qkv[2]  # make torchscript happy (cannot use tensor as tuple)
 
         # Use PyTorch native implementation of FlashAttention-2
-        with sdpa_kernel(SDPBackend.FLASH_ATTENTION):  # Only enable flash attention backend
-            attn = F.scaled_dot_product_attention(q, k, v)
+        attn = F.scaled_dot_product_attention(q, k, v)
 
         x = attn.transpose(1, 2).reshape(B, N, -1)
 

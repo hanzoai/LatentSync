@@ -8,7 +8,6 @@ from dataclasses import dataclass
 
 import torch
 import torch.nn.functional as F
-from torch.nn.attention import sdpa_kernel, SDPBackend
 from torch import nn
 
 from diffusers.configuration_utils import ConfigMixin, register_to_config
@@ -298,8 +297,7 @@ class VersatileAttention(Attention):
                 attention_mask = attention_mask.repeat_interleave(self.heads, dim=0)
 
         # Use PyTorch native implementation of FlashAttention-2
-        with sdpa_kernel(SDPBackend.FLASH_ATTENTION):  # Only enable flash attention backend
-            hidden_states = F.scaled_dot_product_attention(query, key, value, attn_mask=attention_mask)
+        hidden_states = F.scaled_dot_product_attention(query, key, value, attn_mask=attention_mask)
 
         hidden_states = self.concat_heads(hidden_states)
 
