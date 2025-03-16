@@ -13,7 +13,7 @@
    3. Clear the CUDA cache after loading checkpoints.
    4. The stage2 training only requires training the temporal layer and audio cross-attention layer, which significantly reduces VRAM requirement compared to the previous full-parameter fine-tuning.
 
-   Now you can fine-tune LatentSync on a single **RTX 3090**! Start the stage2 training with `configs/unet/stage2_efficient.yaml`.
+   Now you can train LatentSync on a single **RTX 3090**! Start the stage2 training with `configs/unet/stage2_efficient.yaml`.
 
 4. Other code optimizations:
 

@@ -31,9 +31,6 @@ run:
   guidance_scale: 1.5 # 1.5 or 1.0
   trepa_loss_weight: 10
   inference_steps: 20
-  trainable_modules:
-    - motion_modules.
-    - attentions.
   seed: 1247
   use_mixed_noise: true
   mixed_noise_alpha: 1 # 1
@@ -83,9 +80,6 @@ model:
   sample_size: 64
   resnet_time_scale_shift: default # Choose between [default, scale_shift]
 
-  # Actually we don't use the motion module in the final version of LatentSync
-  # When we started the project, we used the codebase of AnimateDiff and tried motion module, the results are poor
-  # We decied to leave the code here for possible future usage
   use_motion_module: false
   motion_module_resolutions: [1, 2, 4, 8]
   motion_module_mid_block: false

@@ -83,9 +83,6 @@ model:
   sample_size: 64
   resnet_time_scale_shift: default # Choose between [default, scale_shift]
 
-  # Actually we don't use the motion module in the final version of LatentSync
-  # When we started the project, we used the codebase of AnimateDiff and tried motion module, the results are poor
-  # We decied to leave the code here for possible future usage
   use_motion_module: true
   motion_module_resolutions: [1, 2, 4, 8]
   motion_module_mid_block: false

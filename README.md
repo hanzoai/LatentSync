@@ -113,7 +113,7 @@ These already include all the checkpoints required for latentsync training and i
 
 ## 🚀 Inference
 
-There are two ways to perform inference, and both require 6.8 GB of VRAM.
+There are two ways to perform inference, and both require **6.8 GB** of VRAM.
 
 ### 1. Gradio App
 
@@ -141,10 +141,9 @@ The complete data processing pipeline includes the following steps:
 2. Resample the video FPS to 25, and resample the audio to 16000 Hz.
 3. Scene detect via [PySceneDetect](https://github.com/Breakthrough/PySceneDetect).
 4. Split each video into 5-10 second segments.
-5. Remove videos where the face is smaller than 256 $\times$ 256, as well as videos with more than one face.
-6. Affine transform the faces according to the landmarks detected by [face-alignment](https://github.com/1adrianb/face-alignment), then resize to 256 $\times$ 256.
-7. Remove videos with [sync confidence score](https://www.robots.ox.ac.uk/~vgg/publications/2016/Chung16a/chung16a.pdf) lower than 3, and adjust the audio-visual offset to 0.
-8. Calculate [hyperIQA](https://openaccess.thecvf.com/content_CVPR_2020/papers/Su_Blindly_Assess_Image_Quality_in_the_Wild_Guided_by_a_CVPR_2020_paper.pdf) score, and remove videos with scores lower than 40.
+5. Affine transform the faces according to the landmarks detected by [face-alignment](https://github.com/1adrianb/face-alignment), then resize to 256 $\times$ 256.
+6. Remove videos with [sync confidence score](https://www.robots.ox.ac.uk/~vgg/publications/2016/Chung16a/chung16a.pdf) lower than 3, and adjust the audio-visual offset to 0.
+7. Calculate [hyperIQA](https://openaccess.thecvf.com/content_CVPR_2020/papers/Su_Blindly_Assess_Image_Quality_in_the_Wild_Guided_by_a_CVPR_2020_paper.pdf) score, and remove videos with scores lower than 40.
 
 Run the script to execute the data processing pipeline:
 
@@ -152,11 +151,11 @@ Run the script to execute the data processing pipeline:
 ./data_processing_pipeline.sh
 ```
 
-You can change the parameter `input_dir` in the script to specify the data directory to be processed. The processed data will be saved in the `high_visual_quality` directory. Each step will generate a new directory to prevent the need to redo the entire pipeline in case the process is interrupted by an unexpected error.
+You should change the parameter `input_dir` in the script to specify the data directory to be processed. The processed videos will be saved in the `high_visual_quality` directory. Each step will generate a new directory to prevent the need to redo the entire pipeline in case the process is interrupted by an unexpected error.
 
 ## 🏋️‍♂️ Training U-Net
 
-Before training, you must process the data as described above and download all the checkpoints. We released a pretrained SyncNet with 94% accuracy on the VoxCeleb2 dataset for the supervision of U-Net training. Note that this SyncNet is trained on affine transformed videos, so when using or evaluating this SyncNet, you need to perform affine transformation on the video first (the code of affine transformation is included in the data processing pipeline).
+Before training, you must process the data as described above and download all the checkpoints. We released a pretrained SyncNet with 94% accuracy on both VoxCeleb2 and HDTF datasets for the supervision of U-Net training. Note that this SyncNet is trained on affine transformed videos, so when using or evaluating this SyncNet, you need to perform affine transformation on the video first (the code of affine transformation is included in the data processing pipeline).
 
 If all the preparations are complete, you can train the U-Net with the following script:
 
@@ -164,7 +163,13 @@ If all the preparations are complete, you can train the U-Net with the following
 ./train_unet.sh
 ```
 
-You should change the parameters in U-Net config file to specify the data directory, checkpoint save path, and other training hyperparameters.
+We prepared three UNet configuration files in the ``configs/unet`` directory, each corresponding to a different training setup:
+
+- `stage1.yaml`: Stage1 training, requires **23 GB** VRAM.
+- `stage2.yaml`: Stage2 training with optimal performance, requires **30 GB** VRAM.
+- `stage2_efficient.yaml`: Efficient Stage 2 training, requires **20 GB** VRAM. It may lead to slight degradation in visual quality and temporal consistency compared with `stage2.yaml`, suitable for users with consumer-grade GPUs, such as the RTX 3090.
+
+Also remember to change the parameters in U-Net config file to specify the data directory, checkpoint save path, and other training hyperparameters.
 
 ## 🏋️‍♂️ Training SyncNet
 
