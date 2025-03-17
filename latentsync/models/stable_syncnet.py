@@ -196,7 +196,6 @@ class DownEncoder2D(nn.Module):
         for i, block_out_channel in enumerate(block_out_channels):
             input_channels = output_channels
             output_channels = block_out_channel
-            # is_final_block = i == len(block_out_channels) - 1
 
             down_block = ResnetBlock2D(
                 in_channels=input_channels,

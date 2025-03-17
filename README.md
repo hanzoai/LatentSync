@@ -179,7 +179,7 @@ In case you want to train SyncNet on your own datasets, you can run the followin
 ./train_syncnet.sh
 ```
 
-After `validations_steps` training, the loss charts will be saved in `train_output_dir`. They contain both the training and validation loss.
+After `validations_steps` training, the loss charts will be saved in `train_output_dir`. They contain both the training and validation loss. If you want to customize the architecture of SyncNet for different image resolutions and input frame lengths, please follow the [guide](docs/syncnet_arch.md).
 
 ## 📊 Evaluation
 

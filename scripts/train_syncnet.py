@@ -271,7 +271,7 @@ def main(config):
                     ("Val loss", val_step_list, val_loss_list),
                 )
 
-            progress_bar.set_postfix({"step_loss": global_average_loss})
+            progress_bar.set_postfix({"step_loss": global_average_loss, "epoch": epoch})
             if global_step >= config.run.max_train_steps:
                 break
 

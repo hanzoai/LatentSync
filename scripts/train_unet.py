@@ -493,7 +493,7 @@ def main(config):
                         ("Sync confidence", val_step_list, sync_conf_list),
                     )
 
-            logs = {"step_loss": loss.item(), "lr": lr_scheduler.get_last_lr()[0]}
+            logs = {"step_loss": loss.item(), "epoch": epoch}
             progress_bar.set_postfix(**logs)
 
             if global_step >= config.run.max_train_steps:

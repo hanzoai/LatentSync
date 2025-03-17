@@ -2,7 +2,7 @@
 
 ## What's new in LatentSync 1.5?
 
-1. Add temporal layer: Our previous claim that the [temporal layer](https://arxiv.org/abs/2307.04725) severely impairs lip-sync accuracy was incorrect; the issue was actually caused by a bug in the code implementation. We have corrected our [paper](https://arxiv.org/abs/2412.09262) and updated the code. After incorporating the temporal layer, LatentSync 1.5 demonstrates significantly improved temporal consistency compared to version 1.0.
+1. Add temporal layer: our previous claim that the [temporal layer](https://arxiv.org/abs/2307.04725) severely impairs lip-sync accuracy was incorrect; the issue was actually caused by a bug in the code implementation. We have corrected our [paper](https://arxiv.org/abs/2412.09262) and updated the code. After incorporating the temporal layer, LatentSync 1.5 demonstrates significantly improved temporal consistency compared to version 1.0.
 
 2. Improves performance on Chinese videos: many issues reported poor performance on Chinese videos, so we added Chinese data to the training of the new model version.
 
