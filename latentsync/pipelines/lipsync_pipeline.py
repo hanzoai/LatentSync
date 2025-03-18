@@ -265,7 +265,7 @@ class LipsyncPipeline(DiffusionPipeline):
         return faces, boxes, affine_matrices
 
     def restore_video(self, faces: torch.Tensor, video_frames: np.ndarray, boxes: list, affine_matrices: list):
-        video_frames = video_frames[: faces.shape[0]]
+        video_frames = video_frames[: len(faces)]
         out_frames = []
         print(f"Restoring {len(faces)} faces...")
         for index, face in enumerate(tqdm.tqdm(faces)):
@@ -281,7 +281,7 @@ class LipsyncPipeline(DiffusionPipeline):
             out_frames.append(out_frame)
         return np.stack(out_frames, axis=0)
 
-    def loop_video(self, whisper_chunks: list, video_frames: np.ndarray, num_frames: int, num_inferences: int):
+    def loop_video(self, whisper_chunks: list, video_frames: np.ndarray):
         # If the audio is longer than the video, we need to loop the video
         if len(whisper_chunks) > len(video_frames):
             faces, boxes, affine_matrices = self.affine_transform_video(video_frames)
@@ -303,11 +303,11 @@ class LipsyncPipeline(DiffusionPipeline):
                     loop_affine_matrices += affine_matrices[::-1]
 
             video_frames = np.concatenate(loop_video_frames, axis=0)[: len(whisper_chunks)]
-            faces = torch.cat(loop_faces, dim=0)
-            boxes = loop_boxes
-            affine_matrices = loop_affine_matrices
+            faces = torch.cat(loop_faces, dim=0)[: len(whisper_chunks)]
+            boxes = loop_boxes[: len(whisper_chunks)]
+            affine_matrices = loop_affine_matrices[: len(whisper_chunks)]
         else:
-            video_frames = video_frames[: num_inferences * num_frames]
+            video_frames = video_frames[: len(whisper_chunks)]
             faces, boxes, affine_matrices = self.affine_transform_video(video_frames)
 
         return video_frames, faces, boxes, affine_matrices
@@ -372,10 +372,7 @@ class LipsyncPipeline(DiffusionPipeline):
         audio_samples = read_audio(audio_path)
         video_frames = read_video(video_path, use_decord=False)
 
-        num_inferences = len(whisper_chunks) // num_frames
-        video_frames, faces, boxes, affine_matrices = self.loop_video(
-            whisper_chunks, video_frames, num_frames, num_inferences
-        )
+        video_frames, faces, boxes, affine_matrices = self.loop_video(whisper_chunks, video_frames)
 
         synced_video_frames = []
         masked_video_frames = []
@@ -385,7 +382,7 @@ class LipsyncPipeline(DiffusionPipeline):
         # Prepare latent variables
         all_latents = self.prepare_latents(
             batch_size,
-            num_frames * num_inferences,
+            len(whisper_chunks),
             num_channels_latents,
             height,
             width,
@@ -394,6 +391,7 @@ class LipsyncPipeline(DiffusionPipeline):
             generator,
         )
 
+        num_inferences = math.ceil(len(whisper_chunks) / num_frames)
         for i in tqdm.tqdm(range(num_inferences), desc="Doing inference..."):
             if self.denoising_unet.add_audio_layer:
                 audio_embeds = torch.stack(whisper_chunks[i * num_frames : (i + 1) * num_frames])
