@@ -341,7 +341,22 @@ class LipsyncPipeline(DiffusionPipeline):
         video_frames = read_video(video_path, use_decord=False)
 
         num_inferences = min(len(video_frames), len(whisper_chunks)) // num_frames
-        video_frames = video_frames[: num_inferences * num_frames]
+
+        # If the audio is longer than the video, we need to loop the video
+        if len(whisper_chunks) > len(video_frames):
+            import math
+            loop_video_count = math.ceil(len(whisper_chunks)/len(video_frames))
+            output_frames = []
+            for i in range(loop_video_count):
+                if i % 2 == 0:
+                    output_frames.append(video_frames)
+                else:
+                    output_frames.append(video_frames[::-1])
+            video_frames = np.concatenate(output_frames, axis=0)[:len(whisper_chunks)]
+            num_inferences = len(whisper_chunks) // num_frames
+        else:
+            video_frames = video_frames[: num_inferences * num_frames]
+
         faces, boxes, affine_matrices = self.affine_transform_video(video_frames)
 
         synced_video_frames = []
