@@ -17,6 +17,7 @@ import numpy as np
 import json
 from typing import Union
 import matplotlib.pyplot as plt
+import imageio
 
 import torch
 import torch.nn as nn
@@ -111,6 +112,19 @@ def read_audio(audio_path: str, audio_sample_rate: int = 16000):
 
 
 def write_video(video_output_path: str, video_frames: np.ndarray, fps: int):
+    with imageio.get_writer(
+        video_output_path,
+        fps=fps,
+        codec="libx264",
+        macro_block_size=None,
+        ffmpeg_params=["-crf", "13"],
+        ffmpeg_log_level="error",
+    ) as writer:
+        for video_frame in video_frames:
+            writer.append_data(video_frame)
+
+
+def write_video_cv2(video_output_path: str, video_frames: np.ndarray, fps: int):
     height, width = video_frames[0].shape[:2]
     out = cv2.VideoWriter(video_output_path, cv2.VideoWriter_fourcc(*"mp4v"), fps, (width, height))
     # out = cv2.VideoWriter(video_output_path, cv2.VideoWriter_fourcc(*"vp09"), fps, (width, height))
