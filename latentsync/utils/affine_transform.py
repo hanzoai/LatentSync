@@ -7,7 +7,7 @@ from einops import rearrange
 import kornia
 
 device = "cuda:0"
-dtype = torch.float32
+dtype = torch.float16
 
 def transformation_from_points(points1, points0, smooth=True, p_bias=None):
     points2 = np.array(points0)

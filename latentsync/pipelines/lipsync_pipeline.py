@@ -268,6 +268,7 @@ class LipsyncPipeline(DiffusionPipeline):
         video_frames = video_frames[: len(faces)]
         out_frames = []
         print(f"Restoring {len(faces)} faces...")
+        torch.cuda.empty_cache() # TODO: let faces not in cuda or split input video/audio can achieve lower VRAM usage
         for index, face in enumerate(tqdm.tqdm(faces)):
             x1, y1, x2, y2 = boxes[index]
             height = int(y2 - y1)
