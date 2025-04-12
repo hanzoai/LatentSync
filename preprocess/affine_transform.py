@@ -45,7 +45,7 @@ class FaceDetector:
         video_frames = read_video(video_path, change_fps=False)
         results = []
         for frame in video_frames:
-            frame, _, _ = self.image_processor.affine_transform(frame, allow_multi_faces=False)
+            frame, _, _ = self.image_processor.affine_transform(frame)
             results.append(frame)
         results = torch.stack(results)
 
