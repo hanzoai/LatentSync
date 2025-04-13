@@ -16,6 +16,7 @@ import os
 import numpy as np
 import json
 from typing import Union
+from pathlib import Path
 import matplotlib.pyplot as plt
 import imageio
 
@@ -271,3 +272,10 @@ def check_ffmpeg_installed():
     result = subprocess.run("ffmpeg -version", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     if not result.returncode == 0:
         raise FileNotFoundError("ffmpeg not found, please install it by:\n    $ conda install -c conda-forge ffmpeg")
+
+
+def check_model_and_download(ckpt_path: str, huggingface_model_id: str = "ByteDance/LatentSync-1.5"):
+    if not os.path.exists(ckpt_path):
+        ckpt_path_obj = Path(ckpt_path)
+        download_cmd = f"huggingface-cli download {huggingface_model_id} {Path(*ckpt_path_obj.parts[1:])} --local-dir {Path(ckpt_path_obj.parts[0])}"
+        subprocess.run(download_cmd, shell=True)

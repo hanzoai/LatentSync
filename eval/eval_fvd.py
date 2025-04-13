@@ -88,7 +88,8 @@ def eval_fvd(real_videos_dir: str, fake_videos_dir: str):
     fvd = FVD()
     real_videos = fvd.detect_videos(real_videos_dir)
     fake_videos = fvd.detect_videos(fake_videos_dir)
-    print(compute_our_fvd(real_videos, fake_videos, device="cpu"))
+    fvd_value = compute_our_fvd(real_videos, fake_videos, device="cpu")
+    print(f"FVD: {fvd_value:.3f}")
 
 
 if __name__ == "__main__":
