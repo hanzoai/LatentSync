@@ -128,5 +128,5 @@ class VideoProcessor:
 
 if __name__ == "__main__":
     video_processor = VideoProcessor(256, "cuda")
-    video_frames = video_processor.affine_transform_video("validation/flux.mp4")
+    video_frames = video_processor.affine_transform_video("assets/demo2_video.mp4")
     write_video("output.mp4", video_frames, fps=25)
