@@ -22,8 +22,8 @@ class AlignRestore(object):
             self.fill_value = torch.tensor([127, 127, 127], device=device, dtype=dtype)
             self.mask = torch.ones((1, 1, self.face_size[1], self.face_size[0]), device=device, dtype=dtype)
 
-    def align_warp_face(self, img, lmks3, smooth=True):
-        affine_matrix, self.p_bias = self.transformation_from_points(lmks3, self.face_template, smooth, self.p_bias)
+    def align_warp_face(self, img, landmarks3, smooth=True):
+        affine_matrix, self.p_bias = self.transformation_from_points(landmarks3, self.face_template, smooth, self.p_bias)
 
         img_tensor = rearrange(
             torch.from_numpy(img).to(device=self.device, dtype=self.dtype), "h w c -> c h w"
