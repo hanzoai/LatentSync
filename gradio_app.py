@@ -62,7 +62,7 @@ def create_args(
     parser.add_argument("--audio_path", type=str, required=True)
     parser.add_argument("--video_out_path", type=str, required=True)
     parser.add_argument("--inference_steps", type=int, default=20)
-    parser.add_argument("--guidance_scale", type=float, default=1.0)
+    parser.add_argument("--guidance_scale", type=float, default=1.5)
     parser.add_argument("--seed", type=int, default=1247)
 
     return parser.parse_args(
@@ -111,8 +111,8 @@ with gr.Blocks(title="LatentSync demo") as demo:
                 guidance_scale = gr.Slider(
                     minimum=1.0,
                     maximum=3.0,
-                    value=2.0,
-                    step=0.5,
+                    value=1.5,
+                    step=0.1,
                     label="Guidance Scale",
                 )
                 inference_steps = gr.Slider(minimum=10, maximum=50, value=20, step=1, label="Inference Steps")
