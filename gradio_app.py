@@ -63,7 +63,9 @@ def create_args(
     parser.add_argument("--video_out_path", type=str, required=True)
     parser.add_argument("--inference_steps", type=int, default=20)
     parser.add_argument("--guidance_scale", type=float, default=1.5)
+    parser.add_argument("--temp_dir", type=str, default="temp")
     parser.add_argument("--seed", type=int, default=1247)
+    parser.add_argument("--enable_deepcache", action="store_true")
 
     return parser.parse_args(
         [
@@ -81,6 +83,9 @@ def create_args(
             str(guidance_scale),
             "--seed",
             str(seed),
+            "--temp_dir",
+            "--temp",
+            "--enable_deepcache",
         ]
     )
 
@@ -88,7 +93,7 @@ def create_args(
 # Create Gradio interface
 with gr.Blocks(title="LatentSync demo") as demo:
     gr.Markdown(
-    """
+        """
     <h1 align="center">LatentSync</h1>
 
     <div style="display:flex;justify-content:center;column-gap:4px;">
